@@ -16,23 +16,10 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.text.secondary,
   },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Colors.background.card,
-    borderRadius: 8,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: Colors.background.border,
-    marginVertical: 24,
-  },
-  searchInput: {
-    flex: 1,
-    color: Colors.text.primary,
-    marginLeft: 12,
-  },
   categoriesContainer: {
     gap: 10,
+    marginBottom: 12,
+    marginTop: 24,
   },
   categoryPill: {
     backgroundColor: Colors.background.card,
@@ -45,7 +32,7 @@ export const styles = StyleSheet.create({
     overflow: "hidden",
   },
   categoryPillActive: {
-    borderWidth: 0,
+    // borderColor: Colors.primary.gradientFrom,
   },
   categoryText: {
     color: Colors.text.secondary,
@@ -109,5 +96,18 @@ export const styles = StyleSheet.create({
   dimOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.14)",
+  },
+  fabContainer: {
+    position: "absolute",
+    right: 16,
+    bottom: 24,
+  },
+  fab: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
 });

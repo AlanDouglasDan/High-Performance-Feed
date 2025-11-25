@@ -12,14 +12,19 @@ import {
   FlatList,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 
 export default function ProductsListing() {
-  const { categories, selectedCategory, handleSelectCategory, products } =
-    useProductsListingLogic();
+  const {
+    categories,
+    selectedCategory,
+    handleSelectCategory,
+    products,
+    loadMore,
+    isLoading,
+  } = useProductsListingLogic();
   const router = useRouter();
 
   return (
@@ -27,20 +32,6 @@ export default function ProductsListing() {
       <Text style={styles.title}>High Performance Feed</Text>
 
       <Text style={styles.subtitle}>Find your perfect products</Text>
-
-      <View style={styles.searchContainer}>
-        <Ionicons
-          name="search-outline"
-          size={20}
-          color={Colors.text.secondary}
-        />
-
-        <TextInput
-          placeholder="Search"
-          style={styles.searchInput}
-          placeholderTextColor={Colors.text.secondary}
-        />
-      </View>
 
       <View>
         <ScrollView
@@ -90,9 +81,21 @@ export default function ProductsListing() {
         keyExtractor={(item) => String(item.id)}
         numColumns={2}
         columnWrapperStyle={styles.productsContainer}
-        contentContainerStyle={{ paddingTop: 12 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          isLoading ? (
+            <View style={{ padding: 20 }}>
+              <Text
+                style={{ color: Colors.text.secondary, textAlign: "center" }}
+              >
+                Loading...
+              </Text>
+            </View>
+          ) : null
+        }
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.productItem}
@@ -106,7 +109,7 @@ export default function ProductsListing() {
           >
             <Image
               source={{
-                uri: item.thumbnailUrl,
+                uri: item.thumbnail,
               }}
               style={styles.imageContainer}
             />
@@ -133,6 +136,21 @@ export default function ProductsListing() {
           </TouchableOpacity>
         )}
       />
+
+      <View style={styles.fabContainer}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => router.push("/Cart/Cart")}
+        >
+          <LinearGradient
+            colors={[Colors.primary.gradientFrom, Colors.primary.gradientTo]}
+            style={styles.fab}
+          >
+            <View style={styles.dimOverlay} />
+            <Ionicons name="cart-outline" size={22} color="#FFFFFF" />
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
     </ScreenLayout>
   );
 }
