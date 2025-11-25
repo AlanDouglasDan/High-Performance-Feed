@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderTopWidth: 0.25,
     borderTopColor: Colors.background.border,
+    gap: 12,
   },
   text12: {
     fontSize: 12,
@@ -107,5 +108,36 @@ export const styles = StyleSheet.create({
   },
   gap0: {
     gap: 0,
+  },
+  carouselContainer: {
+    marginBottom: 24,
+  },
+  carouselImage: {
+    width: "100%",
+    height: 280,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.background.border,
+    backgroundColor: Colors.background.elevated,
+  },
+  dotsContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 12,
+    gap: 6,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: Colors.background.border,
+  },
+  activeDot: {
+    width: 24,
+    backgroundColor: Colors.primary.gradientFrom,
+  },
+  flexShrink: {
+    flexShrink: 1,
   },
 });

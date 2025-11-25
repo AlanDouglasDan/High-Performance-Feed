@@ -1,84 +1,90 @@
-import { useState } from "react";
-
-const CATEGORIES = [
-  "All",
-  "Beauty",
-  "Clothing",
-  "Electronics",
-  "Home",
-  "Shoes",
-  "Sports",
-  "Watches",
-] as const;
-
-export type ProductsCategory = (typeof CATEGORIES)[number];
-
-export type ProductsListingProduct = {
-  id: number;
-  title: string;
-  price: number;
-  rating: number;
-  category: ProductsCategory;
-  thumbnailUrl: string;
-};
-
-const PRODUCTS: ProductsListingProduct[] = [
-  {
-    id: 1,
-    title: "Essence Mascara Lash Princess",
-    price: 12.99,
-    rating: 4.5,
-    category: "Beauty",
-    thumbnailUrl:
-      "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp",
-  },
-  {
-    id: 2,
-    title: "Essence Mascara Lash Princess",
-    price: 12.99,
-    rating: 4.5,
-    category: "Beauty",
-    thumbnailUrl:
-      "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp",
-  },
-  {
-    id: 3,
-    title: "Essence Mascara Lash Princess",
-    price: 12.99,
-    rating: 4.5,
-    category: "Beauty",
-    thumbnailUrl:
-      "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp",
-  },
-  {
-    id: 4,
-    title: "Essence Mascara Lash Princess",
-    price: 12.99,
-    rating: 4.5,
-    category: "Beauty",
-    thumbnailUrl:
-      "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp",
-  },
-];
+import { fetchCategories } from "@/store/categoriesSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  clearCategoryProducts,
+  fetchAllProducts,
+  fetchProductsByCategory,
+  resetProducts,
+} from "@/store/productsSlice";
+import { Product } from "@/store/types";
+import { useEffect, useState } from "react";
 
 export const useProductsListingLogic = () => {
-  const [selectedCategory, setSelectedCategory] = useState<ProductsCategory>(
-    CATEGORIES[0]
-  );
+  const dispatch = useAppDispatch();
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-  const handleSelectCategory = (category: ProductsCategory) => {
+  const { list: categoriesList, loading: categoriesLoading } = useAppSelector(
+    (state) => state.categories
+  );
+  const {
+    allProducts,
+    categoryProducts,
+    loading: productsLoading,
+    hasMore,
+    skip,
+  } = useAppSelector((state) => state.products);
+
+  // Fetch categories on mount
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchAllProducts({ limit: 10, skip: 0 }));
+  }, [dispatch]);
+
+  // Build categories list with "All" option
+  const categories = ["All", ...categoriesList.map((cat) => cat.name)];
+
+  const handleSelectCategory = (category: string) => {
     setSelectedCategory(category);
+
+    if (category === "All") {
+      // Reset and fetch all products
+      dispatch(resetProducts());
+      dispatch(fetchAllProducts({ limit: 10, skip: 0 }));
+    } else {
+      // Find the category slug
+      const categorySlug = categoriesList.find(
+        (cat) => cat.name === category
+      )?.slug;
+      if (categorySlug) {
+        dispatch(clearCategoryProducts());
+        dispatch(
+          fetchProductsByCategory({
+            category: categorySlug,
+            limit: 10,
+            skip: 0,
+          })
+        );
+      }
+    }
   };
 
-  const products = PRODUCTS.filter((product) => {
-    if (selectedCategory === "All") return true;
-    return product.category === selectedCategory;
-  });
+  const loadMore = () => {
+    if (productsLoading || !hasMore) return;
+
+    if (selectedCategory === "All") {
+      dispatch(fetchAllProducts({ limit: 10, skip }));
+    } else {
+      const categorySlug = categoriesList.find(
+        (cat) => cat.name === selectedCategory
+      )?.slug;
+      if (categorySlug) {
+        dispatch(
+          fetchProductsByCategory({ category: categorySlug, limit: 10, skip })
+        );
+      }
+    }
+  };
+
+  // Select products based on current category
+  const products: Product[] =
+    selectedCategory === "All" ? allProducts : categoryProducts;
 
   return {
-    categories: CATEGORIES,
+    categories,
     selectedCategory,
     handleSelectCategory,
     products,
+    loadMore,
+    isLoading: categoriesLoading || productsLoading,
   };
 };

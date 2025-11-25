@@ -8,15 +8,25 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 export default function Cart() {
-  useCartLogic();
+  const {
+    items,
+    totalItems,
+    subtotal,
+    shippingCost,
+    total,
+    handleIncrement,
+    handleDecrement,
+    handleRemove,
+  } = useCartLogic();
   const router = useRouter();
 
   return (
     <ScreenLayout
       style={styles.container}
+      scrollable={false}
       header={
         <View style={styles.flexedRow}>
           <TouchableOpacity
@@ -29,7 +39,9 @@ export default function Cart() {
           <View style={styles.gap4}>
             <Text style={styles.header20}>My Cart</Text>
 
-            <Text style={styles.text12}>3 items</Text>
+            <Text style={styles.text12}>
+              {totalItems} {totalItems === 1 ? "item" : "items"}
+            </Text>
           </View>
         </View>
       }
@@ -38,13 +50,13 @@ export default function Cart() {
           <View style={styles.spacedRow}>
             <Text style={styles.text14}>Subtotal</Text>
 
-            <Text style={styles.text14}>$9.99</Text>
+            <Text style={styles.text14}>${subtotal.toFixed(2)}</Text>
           </View>
 
           <View style={styles.spacedRow}>
             <Text style={styles.text14}>Shipping</Text>
 
-            <Text style={styles.text14}>$9.99</Text>
+            <Text style={styles.text14}>${shippingCost.toFixed(2)}</Text>
           </View>
 
           <View style={styles.line} />
@@ -52,7 +64,7 @@ export default function Cart() {
           <View style={styles.spacedRow}>
             <Text style={styles.header16}>Total</Text>
 
-            <Text style={styles.header16}>$9.99</Text>
+            <Text style={styles.header16}>${total.toFixed(2)}</Text>
           </View>
 
           <GradientButton
@@ -64,42 +76,73 @@ export default function Cart() {
         </View>
       }
     >
-      {[...Array(3)].map((_, index) => (
-        <View key={index} style={styles.card}>
-          <Image
-            source={{
-              uri: "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp",
-            }}
-            style={styles.image}
-          />
-
-          <View style={[styles.gap, styles.flex1]}>
-            <Text style={[styles.header16, { color: Colors.text.secondary }]}>
-              Essence Mascara Lash Princess
-            </Text>
-
-            <Text style={[styles.header16, { color: Colors.text.accent }]}>
-              $9.99
-            </Text>
-
-            <View style={styles.spacedRow}>
-              <View style={styles.counterContainer}>
-                <TouchableOpacity>
-                  <Feather name="minus" size={16} color={Colors.text.primary} />
-                </TouchableOpacity>
-
-                <Text style={styles.header16}>1</Text>
-
-                <TouchableOpacity>
-                  <Feather name="plus" size={16} color={Colors.text.primary} />
-                </TouchableOpacity>
-              </View>
-
-              <Feather name="trash-2" size={16} color={Colors.accent.error} />
-            </View>
-          </View>
+      {items.length === 0 ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text style={[styles.text14, { marginTop: 40 }]}>
+            Your cart is empty
+          </Text>
         </View>
-      ))}
+      ) : (
+        <FlatList
+          data={items}
+          keyExtractor={(item) => String(item.id)}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <Image
+                source={{ uri: item.thumbnail }}
+                style={styles.image}
+                contentFit="cover"
+              />
+
+              <View style={[styles.gap, styles.flex1]}>
+                <Text
+                  style={[styles.header16, { color: Colors.text.secondary }]}
+                  numberOfLines={2}
+                >
+                  {item.title}
+                </Text>
+
+                <Text style={[styles.header16, { color: Colors.text.accent }]}>
+                  ${item.price.toFixed(2)}
+                </Text>
+
+                <View style={styles.spacedRow}>
+                  <View style={styles.counterContainer}>
+                    <TouchableOpacity onPress={() => handleDecrement(item.id)}>
+                      <Feather
+                        name="minus"
+                        size={16}
+                        color={Colors.text.primary}
+                      />
+                    </TouchableOpacity>
+
+                    <Text style={styles.header16}>{item.quantity}</Text>
+
+                    <TouchableOpacity onPress={() => handleIncrement(item.id)}>
+                      <Feather
+                        name="plus"
+                        size={16}
+                        color={Colors.text.primary}
+                      />
+                    </TouchableOpacity>
+                  </View>
+
+                  <TouchableOpacity onPress={() => handleRemove(item.id)}>
+                    <Feather
+                      name="trash-2"
+                      size={16}
+                      color={Colors.accent.error}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )}
+        />
+      )}
     </ScreenLayout>
   );
 }

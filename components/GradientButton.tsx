@@ -47,9 +47,10 @@ export function GradientButton({
 
 const styles = StyleSheet.create({
   button: {
-    width: "100%",
+    // width: "100%",
     borderRadius: 12,
     paddingVertical: 14,
+    paddingHorizontal: 32,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
