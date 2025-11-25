@@ -1,3 +1,4 @@
+import { CachedImage } from "@/components/CachedImage";
 import { GradientButton } from "@/components/GradientButton";
 import { ScreenLayout } from "@/components/ScreenLayout";
 import { Colors } from "@/constants/theme";
@@ -5,7 +6,6 @@ import { styles } from "@/features/ProductDetails/ProductDetails.styles";
 import { useProductDetailsLogic } from "@/features/ProductDetails/useProductDetailsLogic";
 
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import {
@@ -109,7 +109,7 @@ export default function ProductDetails() {
           scrollEventThrottle={16}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <Image
+            <CachedImage
               source={{ uri: item }}
               style={[styles.carouselImage, { width: SCREEN_WIDTH - 32 }]}
               contentFit="cover"

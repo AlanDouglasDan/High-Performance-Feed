@@ -1,10 +1,11 @@
 import { Colors } from "@/constants/theme";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flex: 1,
+    paddingHorizontal: 16,
   },
   headerBackButton: {
     width: 40,
@@ -15,11 +16,13 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.background.border,
   },
+  marginTop: {
+    marginTop: Platform.OS === "android" ? 12 : 0,
+  },
   footerContainer: {
     backgroundColor: Colors.background.secondary,
     paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 28,
+    paddingVertical: 12,
     borderTopWidth: 0.25,
     borderTopColor: Colors.background.border,
     gap: 16,
@@ -49,7 +52,7 @@ export const styles = StyleSheet.create({
   },
   text14: {
     fontSize: 14,
-    color: Colors.text.secondary,
+    color: Colors.text.primary,
   },
   header16: {
     fontSize: 16,
