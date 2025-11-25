@@ -1,3 +1,5 @@
-export const useProductDetailsLogic = () => {
-  return {};
+export const useProductDetailsLogic = (productId?: string) => {
+  return {
+    productId,
+  };
 };
