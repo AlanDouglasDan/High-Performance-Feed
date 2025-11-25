@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/theme";
 
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
@@ -19,12 +19,12 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     borderColor: Colors.background.border,
+    marginTop: Platform.OS === "android" ? 12 : 0,
   },
   footerCard: {
     backgroundColor: Colors.background.secondary,
-    paddingBottom: 28,
+    paddingVertical: 12,
     paddingHorizontal: 16,
-    paddingTop: 12,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

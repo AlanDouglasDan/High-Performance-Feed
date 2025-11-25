@@ -1,3 +1,4 @@
+import { CachedImage } from "@/components/CachedImage";
 import { GradientButton } from "@/components/GradientButton";
 import { ScreenLayout } from "@/components/ScreenLayout";
 import { Colors } from "@/constants/theme";
@@ -5,7 +6,6 @@ import { styles } from "@/features/Cart/Cart.styles";
 import { useCartLogic } from "@/features/Cart/useCartLogic";
 
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
@@ -28,7 +28,7 @@ export default function Cart() {
       style={styles.container}
       scrollable={false}
       header={
-        <View style={styles.flexedRow}>
+        <View style={[styles.flexedRow, styles.marginTop]}>
           <TouchableOpacity
             style={styles.headerBackButton}
             onPress={() => router.back()}
@@ -46,52 +46,52 @@ export default function Cart() {
         </View>
       }
       footer={
-        <View style={styles.footerContainer}>
-          <View style={styles.spacedRow}>
-            <Text style={styles.text14}>Subtotal</Text>
+        items.length > 0 && (
+          <View style={styles.footerContainer}>
+            <View style={styles.spacedRow}>
+              <Text style={styles.text14}>Subtotal</Text>
 
-            <Text style={styles.text14}>${subtotal.toFixed(2)}</Text>
+              <Text style={styles.text14}>${subtotal.toFixed(2)}</Text>
+            </View>
+
+            <View style={styles.spacedRow}>
+              <Text style={styles.text14}>Shipping</Text>
+
+              <Text style={styles.text14}>${shippingCost.toFixed(2)}</Text>
+            </View>
+
+            <View style={styles.line} />
+
+            <View style={styles.spacedRow}>
+              <Text style={styles.header16}>Total</Text>
+
+              <Text style={styles.header16}>${total.toFixed(2)}</Text>
+            </View>
+
+            <GradientButton
+              title="Checkout Now"
+              onPress={() => {
+                // TODO: implement checkout flow
+              }}
+            />
           </View>
-
-          <View style={styles.spacedRow}>
-            <Text style={styles.text14}>Shipping</Text>
-
-            <Text style={styles.text14}>${shippingCost.toFixed(2)}</Text>
-          </View>
-
-          <View style={styles.line} />
-
-          <View style={styles.spacedRow}>
-            <Text style={styles.header16}>Total</Text>
-
-            <Text style={styles.header16}>${total.toFixed(2)}</Text>
-          </View>
-
-          <GradientButton
-            title="Checkout Now"
-            onPress={() => {
-              // TODO: implement checkout flow
-            }}
-          />
-        </View>
+        )
       }
     >
       {items.length === 0 ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text style={[styles.text14, { marginTop: 40 }]}>
-            Your cart is empty
-          </Text>
+          <Text style={styles.header20}>Your cart is empty</Text>
         </View>
       ) : (
         <FlatList
-          data={items}
+          data={[...items].reverse()}
           keyExtractor={(item) => String(item.id)}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <View style={styles.card}>
-              <Image
+              <CachedImage
                 source={{ uri: item.thumbnail }}
                 style={styles.image}
                 contentFit="cover"

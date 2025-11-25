@@ -1,10 +1,11 @@
+import { CachedImage } from "@/components/CachedImage";
 import { ScreenLayout } from "@/components/ScreenLayout";
 import { Colors } from "@/constants/theme";
 import { styles } from "@/features/ProductsListing/ProductsListing.styles";
 import { useProductsListingLogic } from "@/features/ProductsListing/useProductsListingLogic";
+import { useAppSelector } from "@/store/hooks";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -26,6 +27,7 @@ export default function ProductsListing() {
     isLoading,
   } = useProductsListingLogic();
   const router = useRouter();
+  const { totalItems } = useAppSelector((state) => state.cart);
 
   return (
     <ScreenLayout style={styles.container} scrollable={false}>
@@ -107,7 +109,7 @@ export default function ProductsListing() {
               })
             }
           >
-            <Image
+            <CachedImage
               source={{
                 uri: item.thumbnail,
               }}
@@ -147,7 +149,12 @@ export default function ProductsListing() {
             style={styles.fab}
           >
             <View style={styles.dimOverlay} />
-            <Ionicons name="cart-outline" size={22} color="#FFFFFF" />
+            {totalItems > 0 && (
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>{totalItems}</Text>
+              </View>
+            )}
+            <Ionicons name="cart-outline" size={24} color="#FFFFFF" />
           </LinearGradient>
         </TouchableOpacity>
       </View>
