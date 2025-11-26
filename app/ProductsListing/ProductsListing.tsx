@@ -1,9 +1,9 @@
 import { CachedImage } from "@/components/CachedImage";
 import { ScreenLayout } from "@/components/ScreenLayout";
 import { Colors } from "@/constants/theme";
-import { styles } from "@/features/ProductsListing/ProductsListing.styles";
-import { useProductsListingLogic } from "@/features/ProductsListing/useProductsListingLogic";
+import { useProductsListingLogic } from "@/logic/useProductsListingLogic";
 import { useAppSelector } from "@/store/hooks";
+import { styles } from "@/styles/ProductsListing.styles";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";

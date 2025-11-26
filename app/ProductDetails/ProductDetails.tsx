@@ -2,8 +2,8 @@ import { CachedImage } from "@/components/CachedImage";
 import { GradientButton } from "@/components/GradientButton";
 import { ScreenLayout } from "@/components/ScreenLayout";
 import { Colors } from "@/constants/theme";
-import { styles } from "@/features/ProductDetails/ProductDetails.styles";
-import { useProductDetailsLogic } from "@/features/ProductDetails/useProductDetailsLogic";
+import { useProductDetailsLogic } from "@/logic/useProductDetailsLogic";
+import { styles } from "@/styles/ProductDetails.styles";
 
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
