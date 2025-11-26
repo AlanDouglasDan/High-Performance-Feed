@@ -1,4 +1,5 @@
 import {
+  clearCart,
   decrementQuantity,
   incrementQuantity,
   removeFromCart,
@@ -23,6 +24,10 @@ export const useCartLogic = () => {
     dispatch(removeFromCart(productId));
   };
 
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
   // Calculate shipping (free for orders over $50, otherwise $9.99)
   const shippingCost = totalPrice > 50 ? 0 : 9.99;
   const total = totalPrice + shippingCost;
@@ -36,5 +41,6 @@ export const useCartLogic = () => {
     handleIncrement,
     handleDecrement,
     handleRemove,
+    handleClearCart,
   };
 };

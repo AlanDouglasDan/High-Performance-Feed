@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 import { Colors } from "@/constants/theme";
 
@@ -32,9 +32,7 @@ export const styles = StyleSheet.create({
     position: "relative",
     overflow: "hidden",
   },
-  categoryPillActive: {
-    // borderColor: Colors.primary.gradientFrom,
-  },
+  categoryPillActive: {},
   categoryText: {
     color: Colors.text.secondary,
     fontSize: 14,

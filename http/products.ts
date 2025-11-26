@@ -14,7 +14,7 @@ export const getAllProducts = async (
   const response = await fetch(
     `${API_URL}/products?limit=${limit}&skip=${skip}`
   );
-  console.log("fetched products");
+
   if (!response.ok) {
     throw new Error("Failed to fetch products");
   }
@@ -40,7 +40,7 @@ export const getProductsByCategory = async (
   const response = await fetch(
     `${API_URL}/products/category/${category}?limit=${limit}&skip=${skip}`
   );
-  console.log("fetched products by category");
+
   if (!response.ok) {
     throw new Error("Failed to fetch products by category");
   }

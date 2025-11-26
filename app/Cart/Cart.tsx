@@ -2,13 +2,13 @@ import { CachedImage } from "@/components/CachedImage";
 import { GradientButton } from "@/components/GradientButton";
 import { ScreenLayout } from "@/components/ScreenLayout";
 import { Colors } from "@/constants/theme";
-import { styles } from "@/features/Cart/Cart.styles";
-import { useCartLogic } from "@/features/Cart/useCartLogic";
+import { useCartLogic } from "@/logic/useCartLogic";
+import { styles } from "@/styles/Cart.styles";
 
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
 
 export default function Cart() {
   const {
@@ -20,6 +20,7 @@ export default function Cart() {
     handleIncrement,
     handleDecrement,
     handleRemove,
+    handleClearCart,
   } = useCartLogic();
   const router = useRouter();
 
@@ -71,7 +72,19 @@ export default function Cart() {
             <GradientButton
               title="Checkout Now"
               onPress={() => {
-                // TODO: implement checkout flow
+                Alert.alert(
+                  "Success",
+                  "Your order has been placed successfully.",
+                  [
+                    {
+                      text: "Go Home",
+                      onPress: () => {
+                        handleClearCart();
+                        router.replace("/");
+                      },
+                    },
+                  ]
+                );
               }}
             />
           </View>

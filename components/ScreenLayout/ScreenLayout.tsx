@@ -1,26 +1,12 @@
 import { Colors } from "@/constants/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-interface ScreenLayoutProps {
-  children: React.ReactNode;
-  style?: ViewStyle;
-  scrollable?: boolean;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-}
+import { styles } from "./ScreenLayout.styles";
+import { ScreenLayoutProps } from "./ScreenLayout.types";
+import { useScreenLayoutLogic } from "./useScreenLayoutLogic";
 
 export function ScreenLayout({
   children,
@@ -29,7 +15,7 @@ export function ScreenLayout({
   header,
   footer,
 }: ScreenLayoutProps) {
-  const insets = useSafeAreaInsets();
+  const { insets } = useScreenLayoutLogic();
 
   return (
     <LinearGradient
@@ -71,16 +57,3 @@ export function ScreenLayout({
     </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  flex1: {
-    flex: 1,
-  },
-  header: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-  },
-  scrollContent: {
-    flexGrow: 1,
-  },
-});
