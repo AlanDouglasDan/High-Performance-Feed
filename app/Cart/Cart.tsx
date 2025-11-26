@@ -92,9 +92,7 @@ export default function Cart() {
       }
     >
       {items.length === 0 ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <View style={styles.flexCenter}>
           <Text style={styles.header20}>Your cart is empty</Text>
         </View>
       ) : (

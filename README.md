@@ -1,5 +1,3 @@
-![High Performance Feed – Products Listing](./screenshots/products-listing.png)
-
 # High Performance Feed
 
 High Performance Feed is a polished, high-performance shopping experience built with **Expo Router**, **React Native**, and **Redux Toolkit**. It showcases:
