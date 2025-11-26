@@ -35,6 +35,11 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
   },
+  flexCenter: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   header20: {
     fontSize: 20,
     fontWeight: "bold",
