@@ -10,16 +10,11 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import {
   ActivityIndicator,
-  Dimensions,
   FlatList,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function ProductDetails() {
   const { id } = useLocalSearchParams<{ id?: string }>();
@@ -29,24 +24,17 @@ export default function ProductDetails() {
     loading,
     error,
     activeImageIndex,
-    handleImageScroll,
     handleAddToCart,
+    onScroll,
+    screenWidth,
   } = useProductDetailsLogic(id);
 
   const router = useRouter();
 
-  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const slideSize = event.nativeEvent.layoutMeasurement.width;
-    const index = Math.round(event.nativeEvent.contentOffset.x / slideSize);
-    handleImageScroll(index);
-  };
-
   if (loading) {
     return (
       <ScreenLayout style={styles.container}>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <View style={styles.flexCenter}>
           <ActivityIndicator size="large" color={Colors.primary.gradientFrom} />
         </View>
       </ScreenLayout>
@@ -56,9 +44,7 @@ export default function ProductDetails() {
   if (error || !product) {
     return (
       <ScreenLayout style={styles.container}>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <View style={styles.flexCenter}>
           <Text style={styles.semiheader14}>
             {error || "Product not found"}
           </Text>
@@ -107,11 +93,11 @@ export default function ProductDetails() {
           showsHorizontalScrollIndicator={false}
           onScroll={onScroll}
           scrollEventThrottle={16}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(_, index) => index.toString()}
           renderItem={({ item }) => (
             <CachedImage
               source={{ uri: item }}
-              style={[styles.carouselImage, { width: SCREEN_WIDTH - 32 }]}
+              style={[styles.carouselImage, { width: screenWidth - 32 }]}
               contentFit="cover"
             />
           )}

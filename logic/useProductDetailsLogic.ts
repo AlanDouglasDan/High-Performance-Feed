@@ -1,14 +1,24 @@
 import { addToCart } from "@/store/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchProductById } from "@/store/productsSlice";
+
 import { useEffect, useState } from "react";
+import {
+  Dimensions,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from "react-native";
+
+const { width: screenWidth } = Dimensions.get("window");
 
 export const useProductDetailsLogic = (productId?: string) => {
   const dispatch = useAppDispatch();
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
   const { selectedProduct, loading, error } = useAppSelector(
     (state) => state.products
   );
+
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useEffect(() => {
     if (productId) {
@@ -34,12 +44,20 @@ export const useProductDetailsLogic = (productId?: string) => {
     setActiveImageIndex(index);
   };
 
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const slideSize = event.nativeEvent.layoutMeasurement.width;
+    const index = Math.round(event.nativeEvent.contentOffset.x / slideSize);
+
+    handleImageScroll(index);
+  };
+
   return {
     product: selectedProduct,
     loading,
     error,
     activeImageIndex,
-    handleImageScroll,
     handleAddToCart,
+    onScroll,
+    screenWidth,
   };
 };
